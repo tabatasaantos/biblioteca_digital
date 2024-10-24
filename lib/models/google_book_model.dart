@@ -1,37 +1,11 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
 class GoogleBooksModel {
-  static const String baseUrl = "https://www.googleapis.com/books/v1/volumes";
-
-  Future<List<GoogleBook>> searchBooks(String name) async {
-    if (name != "") {
-      http.Response httpResponse =
-          await http.get(Uri.parse("$baseUrl/?q=$name"));
-
-      Map<String, dynamic> response = json.decode(httpResponse.body);
-      List listResponse = response["items"];
-
-      List<GoogleBook> listResult = [];
-      for (int i = 0; i < listResponse.length; i++) {
-        listResult.add(GoogleBook.fromApi(listResponse[i]));
-      }
-
-      return listResult;
-    }
-    return List.empty();
-  }
-}
-
-class GoogleBook {
   late String id;
   late String title;
   late String authors;
   late String description;
   late String thumbnailLink;
 
-  GoogleBook({
+  GoogleBooksModel({
     required this.id,
     required this.title,
     required this.authors,
@@ -39,7 +13,7 @@ class GoogleBook {
     required this.thumbnailLink,
   });
 
-  GoogleBook.fromApi(Map<String, dynamic> map) {
+  GoogleBooksModel.fromApi(Map<String, dynamic> map) {
     id = map["id"];
     title = map["volumeInfo"]["title"] ?? 'Título desconhecido';
     authors = map["volumeInfo"]["authors"] == null
@@ -52,7 +26,7 @@ class GoogleBook {
         'https://placehold.co/200x290';
   }
 
-  GoogleBook.fromJson(Map<String, dynamic> map) {
+  GoogleBooksModel.fromJson(Map<String, dynamic> map) {
     id = map["id"];
     title = map["title"];
     authors = map["authors"];

@@ -1,8 +1,12 @@
 // ignore_for_file: avoid_print
 
-import 'package:biblioteca_digital/models/google_book_service_model.dart';
+import 'dart:convert';
+
+import 'package:biblioteca_digital/models/personal_book_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import '../services/google_book_service.dart';
 
 class PersonalBookDatabase {
   static const String _tableName = "bookTable";
@@ -32,7 +36,7 @@ class PersonalBookDatabase {
     );
   }
 
-  Future<void> save(PersonalBook book) async {
+  Future<void> save(PersonalBookModel book) async {
     print("SAVE");
 
     Map<String, dynamic> bookMap = book.toMap();
@@ -53,7 +57,7 @@ class PersonalBookDatabase {
     }
   }
 
-  Future<List<PersonalBook>> findAll() async {
+  Future<List<PersonalBookModel>> findAll() async {
     print("FIND ALL");
 
     final Database database = await _getDatabase();
@@ -64,7 +68,7 @@ class PersonalBookDatabase {
     return _toList(result);
   }
 
-  Future<List<PersonalBook>> _find(String column, dynamic arg) async {
+  Future<List<PersonalBookModel>> _find(String column, dynamic arg) async {
     print("FIND");
     final Database database = await _getDatabase();
     final List<Map<String, dynamic>> result = await database.query(
@@ -76,15 +80,15 @@ class PersonalBookDatabase {
     return _toList(result);
   }
 
-  Future<PersonalBook> findById(int id) async {
-    List<PersonalBook> result = await _find(_id, id);
+  Future<PersonalBookModel> findById(int id) async {
+    List<PersonalBookModel> result = await _find(_id, id);
     if (result.isNotEmpty) {
       return result[0];
     }
     throw PersonalBookNotFindException();
   }
 
-  Future<void> delete(PersonalBook book) async {
+  Future<void> delete(PersonalBookModel book) async {
     print("DELETE");
 
     final Database database = await _getDatabase();
@@ -96,11 +100,11 @@ class PersonalBookDatabase {
     );
   }
 
-  List<PersonalBook> _toList(List<Map<String, dynamic>> result) {
-    final List<PersonalBook> listPost = [];
+  List<PersonalBookModel> _toList(List<Map<String, dynamic>> result) {
+    final List<PersonalBookModel> listPost = [];
     for (Map<String, dynamic> map in result) {
       listPost.add(
-        PersonalBook.fromMap(map),
+        PersonalBookModel.fromMap(map),
       );
     }
     return listPost;
@@ -110,17 +114,3 @@ class PersonalBookDatabase {
 class PersonalBookNotFindException implements Exception {}
 
 // These below are just examples. Need to create new models
-class PersonalBook {
-  int id = 0;
-  GoogleBook googleBook = GoogleBook(
-      authors: "a", description: "b", id: "c", thumbnailLink: "d", title: "e");
-
-  PersonalBook.fromMap(Map<String, dynamic> map) {
-    id = map["id"];
-    googleBook = map["googleBook"];
-  }
-
-  Map<String, dynamic> toMap() {
-    return {"id": id, "googleBook": googleBook};
-  }
-}
