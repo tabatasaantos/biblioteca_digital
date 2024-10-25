@@ -1,13 +1,15 @@
+import 'package:biblioteca_digital/models/personal_book_model.dart';
 import 'package:biblioteca_digital/pages/widgets/date_input_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/display_text_widget.dart';
+import 'package:biblioteca_digital/pages/widgets/entry_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/primary_button_widget.dart';
 import 'package:biblioteca_digital/until/theme_until.dart';
 import 'package:flutter/material.dart';
 
 class EditDetailsPage extends StatefulWidget {
-  const EditDetailsPage({
-    super.key,
-  });
+  EditDetailsPage({super.key, required this.personalBookModel});
+
+  PersonalBookModel personalBookModel;
 
   @override
   State<EditDetailsPage> createState() => _EditDetailsPageState();
@@ -22,16 +24,15 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
   @override
   void initState() {
     super.initState();
-    // Fill with book info
-    // if(widget.book.comments != ""){
-    //   commentsController.text = widget.book.comments;
-    // }
-    // if(widget.book.dayStarted != ""){
-    //   initialDateController.text = widget.book.dayStarted;
-    // }
-    // if(widget.book.dayFinished != ""){
-    //   finalDateController.text = widget.book.dayFinished;
-    // }
+    if (widget.personalBookModel.comments != "") {
+      commentsController.text = widget.personalBookModel.comments;
+    }
+    if (widget.personalBookModel.dayStarted != "") {
+      initialDateController.text = widget.personalBookModel.dayStarted;
+    }
+    if (widget.personalBookModel.dayFinished != "") {
+      finalDateController.text = widget.personalBookModel.dayFinished;
+    }
   }
 
   @override
@@ -55,7 +56,9 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                   width: 244,
                   child: Column(
                     children: <Widget>[
-                      // Entry(book: "book"),
+                      Entry(
+                          googleBooksModel:
+                              widget.personalBookModel.googleBook),
                       Form(
                         key: _formKey,
                         child: Column(
