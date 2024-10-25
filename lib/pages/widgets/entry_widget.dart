@@ -1,10 +1,11 @@
+import 'package:biblioteca_digital/models/google_book_model.dart';
 import 'package:biblioteca_digital/until/theme_until.dart';
 import 'package:flutter/material.dart';
 
 class Entry extends StatelessWidget {
-  const Entry({
-    super.key,
-  });
+  Entry({super.key, required this.googleBooksModel});
+
+  GoogleBooksModel googleBooksModel;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class Entry extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Image.network(
-              "Image Link",
+              googleBooksModel.thumbnailLink,
               height: 126,
               width: 86,
               fit: BoxFit.cover,
@@ -28,12 +29,12 @@ class Entry extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: Text(
-                    "Book Title",
+                    googleBooksModel.title,
                     style: EntryDecorationProperties.displayText,
                   ),
                 ),
                 Text(
-                  "Book Authors",
+                  googleBooksModel.authors,
                   style: EntryDecorationProperties.authorText,
                 ),
               ],
