@@ -1,3 +1,4 @@
+import 'package:biblioteca_digital/controller/book_controller.dart';
 import 'package:biblioteca_digital/models/personal_book_model.dart';
 import 'package:biblioteca_digital/pages/widgets/date_input_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/display_text_widget.dart';
@@ -20,6 +21,7 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
   final TextEditingController initialDateController = TextEditingController();
   final TextEditingController finalDateController = TextEditingController();
   final TextEditingController commentsController = TextEditingController();
+  final BookController bookController = BookController();
 
   @override
   void initState() {
@@ -92,7 +94,18 @@ class _EditDetailsPageState extends State<EditDetailsPage> {
                               child: PrimaryButtonWidget(
                                   text: "Salvar",
                                   onTap: () {
-                                    // Navigator.pop(context, "Updated book");
+                                    final PersonalBookModel newPersonalBook =
+                                        PersonalBookModel(
+                                            dayStarted:
+                                                initialDateController.text,
+                                            dayFinished:
+                                                finalDateController.text,
+                                            comments: commentsController.text,
+                                            googleBook: widget
+                                                .personalBookModel.googleBook,
+                                            id: widget.personalBookModel.id);
+                                    bookController.updateBook(newPersonalBook);
+                                    Navigator.pop(context, newPersonalBook);
                                   }),
                             ),
                           ],

@@ -1,3 +1,5 @@
+import 'package:biblioteca_digital/controller/book_controller.dart';
+import 'package:biblioteca_digital/models/google_book_model.dart';
 import 'package:biblioteca_digital/pages/home_page.dart';
 import 'package:biblioteca_digital/pages/widgets/date_input_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/display_text_widget.dart';
@@ -6,10 +8,11 @@ import 'package:biblioteca_digital/until/theme_until.dart';
 import 'package:flutter/material.dart';
 
 class NewEntryPage extends StatefulWidget {
-  const NewEntryPage({
+  NewEntryPage({
     super.key,
+    required this.googleBooksModel,
   });
-
+  GoogleBooksModel googleBooksModel;
   @override
   State<NewEntryPage> createState() => _NewEntryPageState();
 }
@@ -19,6 +22,7 @@ class _NewEntryPageState extends State<NewEntryPage> {
   final TextEditingController initialDateController = TextEditingController();
   final TextEditingController finalDateController = TextEditingController();
   final TextEditingController commentsController = TextEditingController();
+  final BookController bookController = BookController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +46,8 @@ class _NewEntryPageState extends State<NewEntryPage> {
                   child: Column(
                     children: <Widget>[
                       // Entry(book: "Book"),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 24.0),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 24.0),
                         child: Text("Book Description"),
                       ),
                       Form(
@@ -79,7 +83,12 @@ class _NewEntryPageState extends State<NewEntryPage> {
                               child: PrimaryButtonWidget(
                                   text: "Adicionar",
                                   onTap: () {
-                                    // Needs add book logic
+                                    bookController.addBook(
+                                      widget.googleBooksModel,
+                                      initialDateController.text,
+                                      finalDateController.text,
+                                      commentsController.text,
+                                    );
 
                                     Navigator.pushAndRemoveUntil(
                                       context,

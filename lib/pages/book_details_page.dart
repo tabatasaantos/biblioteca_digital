@@ -1,3 +1,8 @@
+import 'package:biblioteca_digital/controller/book_controller.dart';
+import 'package:biblioteca_digital/models/google_book_model.dart';
+import 'package:biblioteca_digital/models/personal_book_model.dart';
+import 'package:biblioteca_digital/pages/edit_details_page.dart';
+import 'package:biblioteca_digital/pages/home_page.dart';
 import 'package:biblioteca_digital/pages/widgets/display_text_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/primary_button_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/secondary_button_widget.dart';
@@ -5,15 +10,14 @@ import 'package:biblioteca_digital/until/theme_until.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailsPage extends StatefulWidget {
-  BookDetailsPage({
-    super.key,
-  });
-
+  BookDetailsPage({super.key, required this.personalBookModel});
+  PersonalBookModel personalBookModel;
   @override
   State<BookDetailsPage> createState() => _BookDetailsPageState();
 }
 
 class _BookDetailsPageState extends State<BookDetailsPage> {
+  BookController bookController = BookController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,7 +38,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: Image.network(
-                      "Image Link",
+                      widget.personalBookModel.googleBook.thumbnailLink,
                       height: 220,
                       width: 144,
                       fit: BoxFit.cover,
@@ -43,7 +47,7 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
                     child: Text(
-                      "Book Title",
+                      widget.personalBookModel.googleBook.title,
                       style: ModalDecorationProperties.bookTitle,
                     ),
                   ),
@@ -52,18 +56,18 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                     child: SizedBox(
                       width: double.maxFinite,
                       child: Text(
-                        "Book Authors",
+                        widget.personalBookModel.googleBook.authors,
                         style: ModalDecorationProperties.bookAuthor,
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 24.0),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 24.0),
                     child: Row(
                       children: [
                         Expanded(
                           child: Text(
-                            "Book Description",
+                            'widget.',
                             maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -83,18 +87,18 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                           ),
                         ),
                         Text(
-                          "Inicio da Leitura",
+                          widget.personalBookModel.dayStarted,
                           style: TextStyle(color: AppColors.mediumPink),
                         ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8.0),
                     child: Row(children: <Widget>[
                       Text(
                         "Day started",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       )
                     ]),
@@ -117,12 +121,12 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16.0),
                     child: Row(children: <Widget>[
                       Text(
                         "Day Finished",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       )
                     ]),
@@ -138,8 +142,8 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 32.0),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 32.0),
                     child: Row(
                       children: [
                         Expanded(child: Text("Book Comments")),
@@ -152,18 +156,19 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                       icon: Icons.edit,
                       text: "Editar",
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => EditDetails(
-                        //               book: "book",
-                        //             ))).then((value) {
-                        //   setState(() {
-                        //     if (value != null) {
-                        //       "Update book";
-                        //     }
-                        //   });
-                        // });
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditDetailsPage(
+                                      personalBookModel:
+                                          widget.personalBookModel,
+                                    ))).then((value) {
+                          setState(() {
+                            if (value != null) {
+                              widget.personalBookModel = value;
+                            }
+                          });
+                        });
                       },
                     ),
                   ),
@@ -173,12 +178,13 @@ class _BookDetailsPageState extends State<BookDetailsPage> {
                       icon: Icons.delete,
                       text: "Excluir",
                       onTap: () {
-                        // Delete book
-                        // Navigator.pushAndRemoveUntil(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => const Home()),
-                        //   (_) => false,
-                        // );
+                        bookController.deleteBook(widget.personalBookModel);
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                          (_) => false,
+                        );
                       },
                     ),
                   ),

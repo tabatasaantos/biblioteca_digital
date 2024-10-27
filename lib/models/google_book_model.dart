@@ -23,7 +23,7 @@ class GoogleBooksModel {
             .toString();
     description = map["volumeInfo"]["description"] ?? 'Sem descrição';
     thumbnailLink = map["volumeInfo"]["imageLinks"]?["thumbnail"] ??
-        'https://placehold.co/200x290';
+        'https://placehold.co/200x290.png';
   }
 
   GoogleBooksModel.fromJson(Map<String, dynamic> map) {

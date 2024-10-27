@@ -1,6 +1,7 @@
-import 'package:biblioteca_digital/models/google_book_service_model.dart';
+import 'package:biblioteca_digital/models/google_book_model.dart';
 import 'package:biblioteca_digital/pages/widgets/display_text_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/primary_button_widget.dart';
+import 'package:biblioteca_digital/services/google_book_service.dart';
 import 'package:biblioteca_digital/until/theme_until.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +13,8 @@ class SearchBooksPage extends StatefulWidget {
 }
 
 class _SearchBooksPageState extends State<SearchBooksPage> {
-  final GoogleBooksModel googleBooksService = GoogleBooksModel();
-  // Need to change list type
-  Future<List<dynamic>>? booksList;
+  final GoogleBooksService googleBooksService = GoogleBooksService();
+  Future<List<GoogleBooksModel>>? booksList;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +40,9 @@ class _SearchBooksPageState extends State<SearchBooksPage> {
                   child: TextFormField(
                     onChanged: (value) {
                       // Populate list of books from API
-                      // setState(() {
-                      //   booksList = googleBooksService.searchBooks(value);
-                      // });
+                      setState(() {
+                        booksList = googleBooksService.searchBooks(value);
+                      });
                     },
                     decoration: InputDecorationProperties.newInputDecoration(
                         "Procure por título/autor(a)",
@@ -63,10 +63,8 @@ class _SearchBooksPageState extends State<SearchBooksPage> {
 }
 
 class _BooksList extends StatelessWidget {
-  const _BooksList({super.key, required this.future});
-
-  // Need to change list type
-  final Future<List<dynamic>>? future;
+  const _BooksList({required this.future});
+  final Future<List<GoogleBooksModel>>? future;
 
   @override
   Widget build(BuildContext context) {
