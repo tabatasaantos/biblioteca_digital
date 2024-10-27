@@ -1,5 +1,7 @@
 import 'package:biblioteca_digital/models/google_book_model.dart';
+import 'package:biblioteca_digital/pages/new_entry_page.dart';
 import 'package:biblioteca_digital/pages/widgets/display_text_widget.dart';
+import 'package:biblioteca_digital/pages/widgets/entry_widget.dart';
 import 'package:biblioteca_digital/pages/widgets/primary_button_widget.dart';
 import 'package:biblioteca_digital/services/google_book_service.dart';
 import 'package:biblioteca_digital/until/theme_until.dart';
@@ -157,14 +159,14 @@ class _BooksList extends StatelessWidget {
                                 PrimaryButtonWidget(
                                     text: "Adicionar livro",
                                     onTap: () {
-                                      // Need a googleBook instance
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (context) => NewEntry(
-                                      //               googleBook:
-                                      //                   snapshot.data![index],
-                                      //             )));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  NewEntryPage(
+                                                    googleBooksModel:
+                                                        snapshot.data![index],
+                                                  )));
                                     })
                               ],
                             ),
@@ -173,7 +175,7 @@ class _BooksList extends StatelessWidget {
                       ),
                     );
                   },
-                  // child: Entry(book: snapshot.data![index]),
+                  child: Entry(googleBooksModel: snapshot.data![index]),
                 ),
                 itemCount: snapshot.data!.length,
               );
