@@ -80,7 +80,7 @@ class _FilledHomeState extends State<_FilledHome> {
               const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 48.0, 0.0, 8.0),
-                  child: DisplayTextWidget("Biblioteca"),
+                  child: DisplayTextWidget("Sua biblioteca"),
                 ),
               ),
               SliverGrid.builder(
@@ -158,7 +158,7 @@ class _EmptyHome extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Text(
-          "Sua biblioteca está vazia!",
+          "Sua biblioteca está vazio!",
           style: TextStyle(
               fontFamily: "Bigelow Rules",
               fontSize: 36,
